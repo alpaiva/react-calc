@@ -1,4 +1,5 @@
 import React from "react";
+import './Display.css'
 
 const Display = props => {
 
@@ -7,7 +8,7 @@ const Display = props => {
 
         <div>
 
-            <input readOnly value={props.value} />
+            <input className='inputNumber' readOnly value={props.value} />
         </div>
     )
 }

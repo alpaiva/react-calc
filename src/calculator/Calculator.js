@@ -19,18 +19,19 @@ export default class Calculator extends Component {
 
     onClickEquals() {
         let { operator, current, inputNumber1 } = this.state
+        let currentFloat = parseFloat(current)
         switch (operator) {
             case '+':
-                current += inputNumber1
+                currentFloat += inputNumber1
                 break
             case '*':
-                current *= inputNumber1
+                currentFloat *= inputNumber1
                 break
             case '/':
-                current = inputNumber1 / current
+                currentFloat = inputNumber1 / currentFloat
                 break
             case '-':
-                current = inputNumber1 - current
+                currentFloat = inputNumber1 - currentFloat
                 break
             default:
                 break
@@ -38,7 +39,7 @@ export default class Calculator extends Component {
 
         this.setState({
             operator: '',
-            current: current,
+            current: '' + currentFloat,
             inputNumber1: '',
             resetCurrent: true
         })
@@ -56,7 +57,7 @@ export default class Calculator extends Component {
             this.onClickEquals()
             return;
         }
-        input = current
+        input = parseFloat(current)
         current = ''
         operator = value
 
@@ -74,10 +75,6 @@ export default class Calculator extends Component {
         } else {
             current += '' + value
         }
-        console.log(current)    
-        if (current !== '.'){
-            current = new Number(current)
-        } 
 
         this.setState({ resetCurrent : resetCurrent, current: current })
     }
