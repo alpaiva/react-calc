@@ -1,24 +1,19 @@
 import React from "react";
-import { Component } from "react";
+import { useState } from "react";
 import Button from "../button/Button";
 import Display from "../display/Display";
 import './Calculator.css'
 
-export default class Calculator extends Component {
+const Calculator = (props) => {
 
-    state = {
-        inputNumber1: '',
-        inputNumber2: '',
-        current: '',
-        operator: '',
-        resetCurrent: false
-    }
-    constructor() {
-        super()
-    }
 
-    onClickEquals() {
-        let { operator, current, inputNumber1 } = this.state
+    const [inputNumber1, setInputNumber1] = useState('')
+    const [current, setCurrent] = useState('')
+    const [operator, setOperator] = useState('')
+    const [resetCurrent, setResetCurrent] = useState(false)
+
+    const onClickEquals = () => {
+
         let currentFloat = parseFloat(current)
         switch (operator) {
             case '+':
@@ -36,80 +31,66 @@ export default class Calculator extends Component {
             default:
                 break
         }
-
-        this.setState({
-            operator: '',
-            current: '' + currentFloat,
-            inputNumber1: '',
-            resetCurrent: true
-        })
-
-
+        setOperator('')
+        setCurrent('' + currentFloat)
+        setInputNumber1('')
+        setResetCurrent(true)
     }
 
-    onClickOperator(value) {
-        let { operator, current } = this.state
+    const onClickOperator = (value) => {
+
         let input;
         if (current == '') {
             return;
         }
-        if (operator !== ''){
-            this.onClickEquals()
+        if (operator !== '') {
+            onClickEquals()
             return;
         }
         input = parseFloat(current)
-        current = ''
-        operator = value
-
-
-        this.setState({ operator: operator, current: current, inputNumber1: input })
+        setInputNumber1(input)
+        setOperator(value)
+        setCurrent('')
     }
 
-    onClick(value) {
+    const onClick = (value) => {
 
-        let { resetCurrent , current } = this.state
-
-        if (resetCurrent){
-            current = '' + value
-            resetCurrent= false
+        if (resetCurrent) {
+            setCurrent('' + value)
+            setResetCurrent(false)
         } else {
-            current += '' + value
-        }
-
-        this.setState({ resetCurrent : resetCurrent, current: current })
+            setCurrent(current + '' + value)
+        }        
     }
 
-    render() {
+    return (
 
-        const { current } = this.state
+        <div className='calculator'>
+            Calculator
+            <div className='display'>
+                <Display value={current} />
+            </div>
+            <div className='buttons'>
+                <Button value='7' onClick={() => onClick(7)} />
+                <Button value='8' onClick={() => onClick(8)} />
+                <Button value='9' onClick={() => onClick(9)} />
+                <Button value='/' onClick={() => onClickOperator('/')} />
+                <Button value='4' onClick={() => onClick(4)} />
+                <Button value='5' onClick={() => onClick(5)} />
+                <Button value='6' onClick={() => onClick(6)} />
+                <Button value='*' onClick={() => onClickOperator('*')} />
+                <Button value='1' onClick={() => onClick(1)} />
+                <Button value='2' onClick={() => onClick(2)} />
+                <Button value='3' onClick={() => onClick(3)} />
+                <Button value='-' onClick={() => onClickOperator('-')} />
+                <Button value='0' onClick={() => onClick(0)} />
+                <Button value='.' onClick={() => onClick('.')} />
+                <Button value='=' onClick={() => onClickEquals('=')} />
+                <Button value='+' onClick={() => onClickOperator('+')} />
+            </div>
 
-        return (
+        </div>)
 
-
-            <div className='calculator'>
-                Calculator
-                <div className='display'>
-                    <Display value={current} />
-                </div>
-                <div className='buttons'>
-                    <Button value='7' onClick={() => this.onClick(7)} />
-                    <Button value='8' onClick={() => this.onClick(8)} />
-                    <Button value='9' onClick={() => this.onClick(9)} />
-                    <Button value='/' onClick={() => this.onClickOperator('/')} />
-                    <Button value='4' onClick={() => this.onClick(4)} />
-                    <Button value='5' onClick={() => this.onClick(5)} />
-                    <Button value='6' onClick={() => this.onClick(6)} />
-                    <Button value='*' onClick={() => this.onClickOperator('*')} />
-                    <Button value='1' onClick={() => this.onClick(1)} />
-                    <Button value='2' onClick={() => this.onClick(2)} />
-                    <Button value='3' onClick={() => this.onClick(3)} />
-                    <Button value='-' onClick={() => this.onClickOperator('-')} />
-                    <Button value='0' onClick={() => this.onClick(0)} />
-                    <Button value='.' onClick={() => this.onClick('.')} />
-                    <Button value='=' onClick={() => this.onClickEquals('=')} />
-                    <Button value='+' onClick={() => this.onClickOperator('+')} />
-                </div>
-
-            </div>)
-    }
 }
+
+export default Calculator
